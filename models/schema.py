@@ -1,5 +1,6 @@
 from datetime import datetime
-from typing import List
+import email
+from typing import List, Optional
 from pydantic import BaseModel
 from pydantic import EmailStr
 
@@ -15,6 +16,7 @@ class CreateListing(ListingBase):
     image_id: int
 
 class Listing(ListingBase):
+    id:int
     end_date: datetime
     owner_id: int
 
@@ -35,9 +37,17 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    listings = List[Listing]
+    listings: List[Listing] = []
 
     class Config:
         orm_mode = True
+        arbitrary_types_allowed = True
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+    
+class TokenData(BaseModel):
+    email: Optional[str] = None
     

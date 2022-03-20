@@ -35,9 +35,12 @@ class Listing(Base):
     biddings = relationship("Bid", back_populates="listing")
 
 class Bid(Base):
-    __table__ = "Biddings"
+    __tablename__ = "biddings"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
     listing_id = Column(Integer, ForeignKey("listings.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
     bid_price = Column(Float, index = True)
     bidder = relationship("User", back_populates="biddings")
     listing = relationship("Listing", back_populates="biddings")
+    
