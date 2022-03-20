@@ -1,6 +1,6 @@
 
 from datetime import timedelta
-import datetime
+from datetime import datetime
 from typing import Optional
 from fastapi import APIRouter
 from config import config
@@ -78,7 +78,7 @@ def authenticate_user(db, email: str, password: str):
     user = crud.get_user_by_email(db, email)
     if not user:
         return False
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password):
         return False
     return user
 
