@@ -1,7 +1,7 @@
 
 from datetime import timedelta
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 from fastapi import APIRouter
 from config import config
 from models import schema
@@ -21,7 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 models.Base.metadata.create_all(bind=engine)
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/token")
 
 
 # Dependency
@@ -61,6 +61,17 @@ def login_for_access_token(db: Session = Depends(get_db),form_data: OAuth2Passwo
     access_token = create_access_token(data={"sub": user.email},
                                   	expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+async def get_current_user(db: Session = Depends(get_db),
+                	token: str = Depends(oauth2_scheme)):
+    return await decode_access_token(db, token)
+
+
+@auth.get("/api/me", response_model=schema.User)
+async def read_logged_in_user(current_user: models.User = Depends(get_current_user)):
+   """return user settings for current user"""
+   return current_user
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -116,11 +127,7 @@ async def decode_access_token(db ,token):
     return user
 
 
-def get_current_user(db: Session = Depends(get_db),
-                	token: str = Depends(oauth2_scheme)):
-    return decode_access_token(db, token)
 
-@auth.get("/api/me", response_model=schema.User)
-def read_logged_in_user(current_user: models.User = Depends(get_current_user)):
-   """return user settings for current user"""
-   return current_user
+
+
+

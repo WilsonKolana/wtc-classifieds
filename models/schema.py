@@ -24,7 +24,7 @@ class Listing(ListingBase):
         orm_mode = True
 
 class UserBase(BaseModel):
-   email: EmailStr
+   email: Optional[EmailStr] = None
 
 class UserCreate(UserBase):
     name: str
@@ -35,8 +35,9 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: int
-    is_active: bool
+    id: Optional[int] = None
+    is_active: Optional[bool] = None
+    campus: Optional[str] = None
     listings: List[Listing] = []
 
     class Config:
