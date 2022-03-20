@@ -8,7 +8,7 @@ from pydantic import EmailStr
 class ListingBase(BaseModel):
     title: str
     description: str
-    status: str
+    status: Optional[str] = None
     start_price: float
 
 class CreateListing(ListingBase):

@@ -1,3 +1,5 @@
+import re
+from turtle import title
 from unicodedata import name
 from sqlalchemy.orm import Session
 
@@ -30,6 +32,21 @@ def create_user(db: Session, user: schema.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+def create_listing(db: Session, current_user:models.User, listing_data: schema.CreateListing):
+
+    listing = models.Listing(title = listing_data.title,
+                             description = listing_data.description,
+                             image_id = listing_data.image_id,
+                             start_price = listing_data.start_price,
+                             end_date = listing_data.end_date)
+
+    listing.owner = current_user
+    db.add(listing)
+    db.commit()
+    db.refresh(listing)
+    return listing
 
 
 
