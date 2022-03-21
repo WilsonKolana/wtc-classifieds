@@ -12,6 +12,7 @@ from data_access.database import SessionLocal, engine
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from . import util
 
 # to get a SECRET_KEY string like this run:
 # openssl rand -hex 32
@@ -24,20 +25,11 @@ models.Base.metadata.create_all(bind=engine)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/token")
 
 
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-        
-
 auth = APIRouter(prefix="")
 
 
 @auth.post("/api/users", response_model=schema.User)
-def signup(user_data: schema.UserCreate, db: Session = Depends(get_db)):
+def signup(user_data: schema.UserCreate, db: Session = Depends(util.get_db)):
     """add new user"""
     user = crud.get_user_by_email(db, user_data.email)
     if user:
@@ -48,7 +40,7 @@ def signup(user_data: schema.UserCreate, db: Session = Depends(get_db)):
 
 
 @auth.post("/api/token", response_model=schema.Token)
-def login_for_access_token(db: Session = Depends(get_db),form_data: OAuth2PasswordRequestForm = Depends()):
+def login_for_access_token(db: Session = Depends(util.get_db),form_data: OAuth2PasswordRequestForm = Depends()):
     """generate access token for valid credentials"""
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -63,7 +55,7 @@ def login_for_access_token(db: Session = Depends(get_db),form_data: OAuth2Passwo
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-async def get_current_user(db: Session = Depends(get_db),
+async def get_current_user(db: Session = Depends(util.get_db),
                 	token: str = Depends(oauth2_scheme)):
     return await decode_access_token(db, token)
 
