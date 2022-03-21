@@ -46,5 +46,18 @@ def create_listing(db: Session, current_user:models.User, listing_data: schema.C
     return listing
 
 
+def get_all_listings(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Listing).offset(skip).limit(limit).all()
 
 
+def create_bid(db: Session, current_user: models.User, bid_data: schema.BidCreate):
+
+    bid = models.Bid(listing_id = bid_data.listing_id,
+                     bid_price = bid_data.bid_price)
+
+    bid.bidder = current_user
+    db.add(bid)
+    db.commit()
+    db.refresh(bid)
+
+    return bid

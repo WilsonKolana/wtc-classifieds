@@ -1,4 +1,4 @@
-import re
+
 from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, DateTime, func
 from data_access.database import Base
 from sqlalchemy.orm import relationship
@@ -39,8 +39,9 @@ class Bid(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     listing_id = Column(Integer, ForeignKey("listings.id"))
-    user_id = Column(Integer, ForeignKey("users.id"))
+    bidder_id = Column(Integer, ForeignKey("users.id"))
     bid_price = Column(Float, index = True)
+    bid_date = Column(DateTime(timezone=True), default=func.now())
     bidder = relationship("User", back_populates="biddings")
     listing = relationship("Listing", back_populates="biddings")
     
