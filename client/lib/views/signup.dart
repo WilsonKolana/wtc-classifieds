@@ -1,15 +1,18 @@
 import 'package:client/components/text_field.dart';
-import 'package:client/views/signup.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUPState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUPState extends State<SignUp> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController campusController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -22,7 +25,7 @@ class _LoginState extends State<Login> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          "Login",
+          "Signup",
           style: _theme.textTheme.headline4?.copyWith(
               fontWeight: FontWeight.bold, color: const Color(0xFF244581)),
         ),
@@ -34,6 +37,26 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomTextField(
+                controller: nameController,
+                labelText: 'Name',
+                obscureText: false,
+              ),
+              CustomTextField(
+                controller: surnameController,
+                labelText: 'Surname',
+                obscureText: false,
+              ),
+              CustomTextField(
+                controller: phoneController,
+                labelText: 'Phone',
+                obscureText: false,
+              ),
+              CustomTextField(
+                controller: campusController,
+                labelText: 'Campus',
+                obscureText: false,
+              ),
+              CustomTextField(
                 controller: emailController,
                 labelText: 'Email',
                 obscureText: false,
@@ -43,17 +66,6 @@ class _LoginState extends State<Login> {
                 labelText: 'Password',
                 obscureText: true,
               ),
-              TextButton(
-                onPressed: () {
-                  //forgot password screen
-                },
-                child: const Text(
-                  'Forgot Password',
-                  style: TextStyle(
-                    color: Color(0xFF244581),
-                  ),
-                ),
-              ),
               Center(
                 child: SizedBox(
                     width: MediaQuery.of(context).size.width - 50,
@@ -61,33 +73,13 @@ class _LoginState extends State<Login> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF244581)),
-                      child: const Text('Login'),
+                      child: const Text('SignUp'),
                       onPressed: () {
                         print(emailController.text);
                         print(passwordController.text);
+                        Navigator.pop(context);
                       },
                     )),
-              ),
-              Row(
-                children: <Widget>[
-                  const Text("Don't have an account?"),
-                  TextButton(
-                    child: const Text(
-                      'Signup',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF244581),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignUp()),
-                      );
-                    },
-                  )
-                ],
               ),
             ],
           ),
