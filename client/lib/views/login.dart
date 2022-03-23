@@ -67,9 +67,10 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         print(emailController.text);
                         print(passwordController.text);
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => const Home()),
+                          (Route<dynamic> route) => false,
                         );
                       },
                     )),

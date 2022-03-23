@@ -21,6 +21,7 @@ class _SignUPState extends State<SignUp> {
     ThemeData _theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0,
