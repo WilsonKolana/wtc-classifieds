@@ -1,6 +1,8 @@
-import 'package:client/components/text_field.dart';
+import 'package:client/views/home.dart';
 import 'package:client/views/signup.dart';
 import 'package:flutter/material.dart';
+
+import 'components/text_field.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -65,6 +67,10 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         print(emailController.text);
                         print(passwordController.text);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Home()),
+                        );
                       },
                     )),
               ),

@@ -1,5 +1,5 @@
-import 'package:client/components/text_field.dart';
 import 'package:flutter/material.dart';
+import 'components/text_field.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
