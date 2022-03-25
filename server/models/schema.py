@@ -1,6 +1,4 @@
 from datetime import datetime
-import email
-from email.mime import image
 from typing import List, Optional
 from pydantic import BaseModel
 from pydantic import EmailStr
@@ -14,7 +12,7 @@ class ListingBase(BaseModel):
 
 class CreateListing(ListingBase):
     end_date: datetime
-    image_id: int
+    image_id: str
 
 
 class UserBase(BaseModel):
@@ -49,7 +47,7 @@ class Bid(BaseModel):
 class Listing(ListingBase):
     id:int
     end_date: datetime
-    image_id: int
+    image_id: str
     owner: User
     biddings: List[Bid] = []
 

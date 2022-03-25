@@ -1,4 +1,3 @@
-from operator import imod
 from fastapi import FastAPI
 import uvicorn
 from config import config

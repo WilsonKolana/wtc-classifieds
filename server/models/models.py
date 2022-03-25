@@ -1,4 +1,5 @@
 
+from operator import index
 from sqlalchemy import Boolean, Column, Float, ForeignKey, Integer, String, DateTime, func
 from data_access.database import Base
 from sqlalchemy.orm import relationship
@@ -29,7 +30,7 @@ class Listing(Base):
     start_date = Column(DateTime(timezone=True), default=func.now())
     end_date = Column(DateTime, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
-    image_id = Column(Integer)
+    image_id = Column(String, index = True)
 
     owner = relationship("User", back_populates="listings")
     biddings = relationship("Bid", back_populates="listing")
