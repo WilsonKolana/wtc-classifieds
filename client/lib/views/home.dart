@@ -1,3 +1,4 @@
+import 'package:client/views/upload_listing.dart';
 import 'package:flutter/material.dart';
 
 import 'components/connect_account_card.dart';
@@ -33,7 +34,10 @@ class _HomeState extends State<Home> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               ConnectAccountCard(),
-              SectionHeader(title: "Recommeded for you"),
+              SectionHeader(
+                title: "Recommeded for you",
+                leading: "upload",
+              ),
               RecomendedClassifieds(),
               SectionHeader(title: "Available auctions", leading: "View All"),
               UpcomingAuctions()
@@ -65,11 +69,19 @@ class SectionHeader extends StatelessWidget {
             style: _theme.textTheme.headline6?.copyWith(
                 fontWeight: FontWeight.bold, color: const Color(0xFF26354E)),
           ),
-          Text(
-            leading ?? "",
-            style: _theme.textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.bold, color: const Color(0xFF204680)),
-          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const UploadPage()),
+              );
+            },
+            child: Text(
+              leading ?? "",
+              style: _theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.bold, color: const Color(0xFF204680)),
+            ),
+          )
         ],
       ),
     );

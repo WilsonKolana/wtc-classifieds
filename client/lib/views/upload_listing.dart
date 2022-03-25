@@ -18,7 +18,69 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Kindacode.com'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton.icon(
+                    onPressed: () => _upload('camera'),
+                    icon: const Icon(Icons.camera),
+                    label: const Text('camera')),
+                ElevatedButton.icon(
+                    onPressed: () => _upload('gallery'),
+                    icon: const Icon(Icons.library_add),
+                    label: const Text('Gallery')),
+              ],
+            ),
+            Expanded(
+              child: FutureBuilder(
+                future: _loadImages(),
+                builder: (context,
+                    AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return ListView.builder(
+                      itemCount: snapshot.data?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        final Map<String, dynamic> image =
+                            snapshot.data![index];
+
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: ListTile(
+                            dense: false,
+                            leading: Image.network(image['url']),
+                            title: Text(image['uploaded_by']),
+                            subtitle: Text(image['description']),
+                            trailing: IconButton(
+                              onPressed: () => _delete(image['path']),
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   // Select and image from the gallery or take a picture with the camera
@@ -38,7 +100,7 @@ class _UploadPageState extends State<UploadPage> {
 
       try {
         // Uploading the selected image with some custom meta data
-        await storage.ref(fileName).putFile(
+        await storage.ref('gs://wtc-classifieds.appspot.com/$fileName').putFile(
             imageFile,
             SettableMetadata(customMetadata: {
               'uploaded_by': 'user',
