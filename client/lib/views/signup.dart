@@ -1,3 +1,4 @@
+import 'package:client/controllers/user.dart';
 import 'package:flutter/material.dart';
 import 'components/text_field.dart';
 
@@ -15,6 +16,17 @@ class _SignUPState extends State<SignUp> {
   TextEditingController campusController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    surnameController.dispose();
+    campusController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +88,18 @@ class _SignUPState extends State<SignUp> {
                           primary: const Color(0xFF244581)),
                       child: const Text('SignUp'),
                       onPressed: () {
-                        print(emailController.text);
-                        print(passwordController.text);
-                        Navigator.pop(context);
+                        Future<int> response = UserController().signup(
+                            name: nameController.text,
+                            surname: surnameController.text,
+                            phone: phoneController.text,
+                            campus: campusController.text,
+                            email: emailController.text,
+                            password: passwordController.text);
+                        response.then((value) {
+                          if (value == 200) {
+                            Navigator.pop(context);
+                          }
+                        });
                       },
                     )),
               ),

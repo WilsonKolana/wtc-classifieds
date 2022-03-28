@@ -1,29 +1,36 @@
 class User {
-  String name;
-  String email;
-  int id;
-  bool isActive;
-  String campus;
-  String phone;
+  String username;
+  String useremail;
+  int userid;
+  bool userisActive;
+  String usercampus;
+  String userphone;
   // String token;
 
+  int get id => userid;
+  String get name => username;
+  String get email => useremail;
+  bool get isActive => userisActive;
+  String get campus => usercampus;
+  String get phone => userphone;
+
   User({
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.campus,
-    required this.isActive,
-    required this.id,
+    required this.username,
+    required this.useremail,
+    required this.userphone,
+    required this.usercampus,
+    required this.userisActive,
+    required this.userid,
   });
   // this.token = ""
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        name: json["name"],
-        email: json["email"],
-        id: json["id"],
-        isActive: json["is_active"],
-        campus: json["campus"],
-        phone: json["phone"]);
+        username: json["name"],
+        useremail: json["email"],
+        userid: json["id"],
+        userisActive: json["is_active"],
+        usercampus: json["campus"],
+        userphone: json["phone"]);
   }
 }
