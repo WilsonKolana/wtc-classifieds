@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import List, Optional
 from fastapi import APIRouter
 from config import config
-from models import schema
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from models import crud, models, schema
