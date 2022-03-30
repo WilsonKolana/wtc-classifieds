@@ -1,4 +1,5 @@
 
+from urllib import response
 from fastapi.testclient import TestClient
 from api.server import app
 from sqlalchemy import create_engine
@@ -92,10 +93,10 @@ def test_read_loggedin_user():
     token = response.json()["access_token"]
     print(token)
 
-    respose2 = client.get("/api/me", headers={"Authorization":"Bearer " + token})
-    print(respose2.json())
-    assert respose2.status_code == 200
-    data = respose2.json()
+    response2 = client.get("/api/me", headers={"Authorization":"Bearer " + token})
+    print(response2.json())
+    assert response2.status_code == 200
+    data = response2.json()
     assert data["email"] == "deadpool3@example.com"
 
          
@@ -117,12 +118,45 @@ def test_create_listing():
                     "end_date": "2022-03-30T04:04:37.831Z",
                     "image_id": "1"}
 
-    respose2 = client.post("/listing/create", json=listing_data, headers={"Authorization":"Bearer " + token})
-    print(respose2.json())
-    assert respose2.status_code == 200
-    data = respose2.json()
+    response2 = client.post("/listing/create", json=listing_data, headers={"Authorization":"Bearer " + token})
+    assert response2.status_code == 200
+    data = response2.json()
     assert data["title"] == "laptop"
     assert data["start_price"] == 200
+
+
+def test_create_a_bid():
+    json={"username": "deadpool3@example.com",
+         "password": "pool",
+         "grant_type":"",
+         "scope":"",
+         "client_id":"",
+         "client_secret":""}
+    response = client.post("/api/token", data=json) #login first
+    token = response.json()["access_token"]
+
+    bid_data = {
+                "listing_id": 1,
+                "bid_price": 250 }
+
+    response2 = client.post("/listing/bid", json=bid_data, headers={"Authorization":"Bearer " + token})
+    assert response2.status_code == 200
+    data = response2.json()
+    assert data["bid_price"] == 250
+    assert data["bidder"]["email"] == "deadpool3@example.com"
+
+
+def test_get_all_listings():
+    response = client.get("listings/")
+    assert response.status_code == 200
+    data = response.json()
+    assert data[0]["title"] == "laptop"
+
+
+
+
+
+
 
          
 
